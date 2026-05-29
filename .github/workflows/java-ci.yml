@@ -1,0 +1,68 @@
+name: Java CI - Bowling Game (TDD + Quality Gates)
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+    
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v5
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+          cache: 'maven'  # cache dependencies for faster build
+
+      - name: Build + Tests + Checkstyle + PMD
+        id: verify
+        continue-on-error: true
+        run: mvn -B clean verify
+
+      - name: Upload PMD XML report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: pmd-report
+          path: target/pmd.xml
+          if-no-files-found: warn
+          retention-days: 14
+        
+      - name: Upload Surefire reports
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: surefire-reports
+          path: target/surefire-reports
+          if-no-files-found: warn
+          retention-days: 14        
+
+      - name: Upload Checkstyle report
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: checkstyle-report
+          path: |
+            target/checkstyle-result.xml
+            target/site/checkstyle.html
+          if-no-files-found: warn
+          retention-days: 14
+
+      - name: Publish PMD report to PR
+        if: always() && github.event_name == 'pull_request'
+        uses: jwgmeligmeyling/pmd-github-action@master
+        with:
+          path: '**/pmd.xml'  # Maven PMD generates this file automatically
+          title: 'PMD Code Quality Report'
+          
+      - name: Fail job if verify failed
+        if: steps.verify.outcome == 'failure'
+        run: exit 1
+        
