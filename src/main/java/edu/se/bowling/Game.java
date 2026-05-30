@@ -3,6 +3,8 @@ package edu.se.bowling;
 public class Game {
 
     private static final int MAX_NUMBER_OF_ROLLS = 21;
+    private static final int NUMBER_OF_PINS = 10;
+    private static final int NUMBER_OF_FRAMES = 10;
     private int[] rolls = new int[MAX_NUMBER_OF_ROLLS];
     private int currentRoll = 0;
 
@@ -13,9 +15,9 @@ public class Game {
     public int score() {
         int result = 0;
         int i = 0;
-        for (int frame = 0; frame < 10; frame++) {
-            if (rolls[i] + rolls[i + 1] == 10) {
-                result += 10 + rolls[i + 2];
+        for (int frame = 0; frame < NUMBER_OF_FRAMES; frame++) {
+            if (isSpare(i)) {
+                result += NUMBER_OF_PINS + spareBonus(i);
                 i += 2;
             } else {
                 result += rolls[i] + rolls[i + 1];
@@ -23,5 +25,13 @@ public class Game {
             }
         }
         return result;
+    }
+
+    private boolean isSpare(int firstRollInFrameIdx) {
+        return rolls[firstRollInFrameIdx] + rolls[firstRollInFrameIdx + 1] == NUMBER_OF_PINS;
+    }
+
+    private int spareBonus(int firstRollInFrameIdx) {
+        return rolls[firstRollInFrameIdx + 2];
     }
 }

@@ -20,6 +20,11 @@ public class BowlingGameTest {
 		}
 	}
 
+	private void rollSpare(){
+		game.roll(5);
+		game.roll(5);
+	}
+
 	@Test
 	public void testGutterGame() {
 		rollMany(20, 0);
@@ -34,8 +39,7 @@ public class BowlingGameTest {
 
 	@Test
 	void testOneSpare() {
-		game.roll(5);
-		game.roll(5); // Spare!
+		rollSpare();
 		game.roll(3);
 		rollMany(17, 0);
 		assertEquals(16, game.score());
