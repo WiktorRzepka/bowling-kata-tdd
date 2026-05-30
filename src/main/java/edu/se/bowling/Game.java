@@ -5,6 +5,7 @@ public class Game {
     private static final int MAX_NUMBER_OF_ROLLS = 21;
     private static final int NUMBER_OF_PINS = 10;
     private static final int NUMBER_OF_FRAMES = 10;
+    private static final int FIRST_NINE_FRAMES_MAX_ROLLS = 18;
     private int[] rolls = new int[MAX_NUMBER_OF_ROLLS];
     private int currentRoll = 0;
 
@@ -13,10 +14,8 @@ public class Game {
             throw new IllegalArgumentException("Liczba zbitych kręgli musi być w przedziale 0-10.");
         }
 
-        if (currentRoll % 2 == 1 && rolls[currentRoll - 1] != NUMBER_OF_PINS && currentRoll < 18) {
-            if (rolls[currentRoll - 1] + pins > NUMBER_OF_PINS) {
-                throw new IllegalArgumentException("Suma kręgli w jednej ramce nie może przekraczać 10.");
-            }
+        if (isSecondRollInNormalFrame()) {
+            validateFrameTotalPins(pins);
         }
 
         rolls[currentRoll++] = pins;
@@ -55,5 +54,15 @@ public class Game {
 
     private int strikeBonus(int firstRollInFrameIdx){
         return rolls[firstRollInFrameIdx + 1] + rolls[firstRollInFrameIdx + 2];
+    }
+
+    private boolean isSecondRollInNormalFrame() {
+        return currentRoll % 2 == 1 && rolls[currentRoll - 1] != NUMBER_OF_PINS && currentRoll < FIRST_NINE_FRAMES_MAX_ROLLS;
+    }
+
+    private void validateFrameTotalPins(int pins) {
+        if (rolls[currentRoll - 1] + pins > NUMBER_OF_PINS) {
+            throw new IllegalArgumentException("Suma kręgli w jednej ramce nie może przekraczać 10.");
+        }
     }
 }
