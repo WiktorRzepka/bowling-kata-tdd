@@ -3,8 +3,7 @@ package edu.se.bowling;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BowlingGameTest {
 	private Game game;
@@ -58,5 +57,10 @@ public class BowlingGameTest {
 	void testPerfectGame() {
 		rollMany(12, 10);
 		assertEquals(300, game.score());
+	}
+
+	@Test
+	void testNegativePinsShouldThrowException() {
+		assertThrows(IllegalArgumentException.class, () -> game.roll(-1));
 	}
 }
