@@ -10,9 +10,7 @@ public class Game {
     private int currentRoll = 0;
 
     public void roll(int pins) {
-        if (pins < 0 || pins > NUMBER_OF_PINS){
-            throw new IllegalArgumentException("Liczba zbitych kręgli musi być w przedziale 0-10.");
-        }
+        validatePinsCount(pins);
 
         if (isSecondRollInNormalFrame()) {
             validateFrameTotalPins(pins);
@@ -26,7 +24,7 @@ public class Game {
         int i = 0;
         for (int frame = 0; frame < NUMBER_OF_FRAMES; frame++) {
             if (isStrike(i)){
-                result += 10 + strikeBonus(i);
+                result += NUMBER_OF_PINS + strikeBonus(i);
                 i += 1;
             }
             else if (isSpare(i)) {
@@ -63,6 +61,12 @@ public class Game {
     private void validateFrameTotalPins(int pins) {
         if (rolls[currentRoll - 1] + pins > NUMBER_OF_PINS) {
             throw new IllegalArgumentException("Suma kręgli w jednej ramce nie może przekraczać 10.");
+        }
+    }
+
+    private void validatePinsCount(int pins) {
+        if (pins < 0 || pins > NUMBER_OF_PINS){
+            throw new IllegalArgumentException("Liczba zbitych kręgli musi być w przedziale 0-10.");
         }
     }
 }
