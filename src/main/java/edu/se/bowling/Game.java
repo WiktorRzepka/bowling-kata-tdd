@@ -9,8 +9,8 @@ public class Game {
     private int currentRoll = 0;
 
     public void roll(int pins) {
-        if (pins < 0){
-            throw new IllegalArgumentException("Liczba zbitych kręgli nie może być ujemna.");
+        if (pins < 0 || pins > 10){
+            throw new IllegalArgumentException("Liczba zbitych kręgli musi być w przedziale 0-10.");
         }
         rolls[currentRoll++] = pins;
     }
