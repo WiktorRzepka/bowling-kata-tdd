@@ -26,4 +26,9 @@ public class BowlingGameTest {
 		assertEquals(0, game.score());
 	}
 
+	@Test
+	void testAllOnes() {
+		rollMany(20, 1);
+		assertEquals(20, game.score());
+	}
 }
