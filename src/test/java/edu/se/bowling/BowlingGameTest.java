@@ -63,4 +63,9 @@ public class BowlingGameTest {
 	void testNegativePinsShouldThrowException() {
 		assertThrows(IllegalArgumentException.class, () -> game.roll(-1));
 	}
+
+	@Test
+	void testMoreThan10PinsInSingleRollShouldThrowException() {
+		assertThrows(IllegalArgumentException.class, () -> game.roll(11));
+	}
 }
