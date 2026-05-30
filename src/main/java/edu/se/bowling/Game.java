@@ -31,7 +31,7 @@ public class Game {
                 result += NUMBER_OF_PINS + spareBonus(i);
                 i += 2;
             } else {
-                result += rolls[i] + rolls[i + 1];
+                result += sumOfBallsInFrame(i);
                 i += 2;
             }
         }
@@ -52,6 +52,10 @@ public class Game {
 
     private int strikeBonus(int firstRollInFrameIdx){
         return rolls[firstRollInFrameIdx + 1] + rolls[firstRollInFrameIdx + 2];
+    }
+
+    private int sumOfBallsInFrame(int firstRollInFrameIdx) {
+        return rolls[firstRollInFrameIdx] + rolls[firstRollInFrameIdx + 1];
     }
 
     private boolean isSecondRollInNormalFrame() {
