@@ -12,6 +12,10 @@ public class Game {
     public void roll(int pins) {
         validatePinsCount(pins);
 
+        if (isGameOver()) {
+            throw new IllegalStateException("Gra została już zakończona. Nie można wykonać więcej rzutów.");
+        }
+
         if (isSecondRollInNormalFrame()) {
             validateFrameTotalPins(pins);
         }
@@ -71,6 +75,35 @@ public class Game {
     private void validatePinsCount(int pins) {
         if (pins < 0 || pins > NUMBER_OF_PINS){
             throw new IllegalArgumentException("Liczba zbitych kręgli musi być w przedziale 0-10.");
+        }
+    }
+
+    private boolean isGameOver() {
+        int idx = 0;
+
+        for (int frame = 0; frame < NUMBER_OF_FRAMES; frame++) {
+            if (idx >= currentRoll) {
+                return false;
+            }
+
+            if (rolls[idx] == NUMBER_OF_PINS) {
+                idx += 1;
+            } else {
+                if (idx + 1 >= currentRoll) {
+                    return false;
+                }
+                idx += 2;
+            }
+        }
+
+        if (rolls[idx - 1] == NUMBER_OF_PINS) {
+            return currentRoll >= idx + 2;
+        }
+        else if (rolls[idx - 2] + rolls[idx - 1] == NUMBER_OF_PINS) {
+            return currentRoll >= idx + 1;
+        }
+        else {
+            return currentRoll >= idx;
         }
     }
 }
