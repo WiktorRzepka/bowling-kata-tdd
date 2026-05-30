@@ -16,7 +16,11 @@ public class Game {
         int result = 0;
         int i = 0;
         for (int frame = 0; frame < NUMBER_OF_FRAMES; frame++) {
-            if (isSpare(i)) {
+            if (rolls[i] == NUMBER_OF_PINS){
+                result += 10 + rolls[i + 1] + rolls[i + 2];
+                i += 1;
+            }
+            else if (isSpare(i)) {
                 result += NUMBER_OF_PINS + spareBonus(i);
                 i += 2;
             } else {
