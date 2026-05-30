@@ -12,6 +12,13 @@ public class Game {
         if (pins < 0 || pins > NUMBER_OF_PINS){
             throw new IllegalArgumentException("Liczba zbitych kręgli musi być w przedziale 0-10.");
         }
+
+        if (currentRoll % 2 == 1 && rolls[currentRoll - 1] != NUMBER_OF_PINS && currentRoll < 18) {
+            if (rolls[currentRoll - 1] + pins > NUMBER_OF_PINS) {
+                throw new IllegalArgumentException("Suma kręgli w jednej ramce nie może przekraczać 10.");
+            }
+        }
+
         rolls[currentRoll++] = pins;
     }
 
