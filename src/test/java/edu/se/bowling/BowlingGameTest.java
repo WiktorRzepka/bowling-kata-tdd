@@ -74,4 +74,10 @@ public class BowlingGameTest {
 		game.roll(6);
 		assertThrows(IllegalArgumentException.class, () -> game.roll(5));
 	}
+
+	@Test
+	void testTooManyRollsShouldThrowException() {
+		rollMany(20, 0);
+		assertThrows(IllegalStateException.class, () -> game.roll(1));
+	}
 }
