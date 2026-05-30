@@ -12,8 +12,15 @@ public class Game {
 
     public int score() {
         int result = 0;
-        for (int i = 0; i < currentRoll; i++) {
-            result += rolls[i];
+        int i = 0;
+        for (int frame = 0; frame < 10; frame++) {
+            if (rolls[i] + rolls[i + 1] == 10) {
+                result += 10 + rolls[i + 2];
+                i += 2;
+            } else {
+                result += rolls[i] + rolls[i + 1];
+                i += 2;
+            }
         }
         return result;
     }
